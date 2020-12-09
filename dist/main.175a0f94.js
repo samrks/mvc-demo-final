@@ -11205,72 +11205,515 @@ if ( typeof noGlobal === "undefined" ) {
 return jQuery;
 } );
 
-},{"process":"z4C3"}],"US5u":[function(require,module,exports) {
+},{"process":"z4C3"}],"BQVr":[function(require,module,exports) {
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _jquery = _interopRequireDefault(require("jquery"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var EventBus = /*#__PURE__*/function () {
+  function EventBus() {
+    _classCallCheck(this, EventBus);
+
+    this._eventBus = (0, _jquery.default)(window);
+  }
+
+  _createClass(EventBus, [{
+    key: "on",
+    value: function on(eventName, fn) {
+      return this._eventBus.on(eventName, fn);
+    }
+  }, {
+    key: "trigger",
+    value: function trigger(eventName, data) {
+      return this._eventBus.trigger(eventName, data);
+    }
+  }, {
+    key: "off",
+    value: function off(eventName, fn) {
+      return this._eventBus.off(eventName, fn);
+    }
+  }]);
+
+  return EventBus;
+}();
+
+var _default = EventBus;
+/*
+使用方法
+const e = new EventBus()
+e.on()
+e.trigger()
+e.off()
+*/
+
+exports.default = _default;
+},{"jquery":"juYr"}],"wYwp":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _EventBus2 = _interopRequireDefault(require("./EventBus"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+// extends 实现继承共有属性
+var Model = /*#__PURE__*/function (_EventBus) {
+  _inherits(Model, _EventBus);
+
+  var _super = _createSuper(Model);
+
+  function Model(options) {
+    var _this;
+
+    _classCallCheck(this, Model);
+
+    // this.data = options.data  // data 必须传入才会赋值到当前实例对象的data上。也就是说，下面的方法都是在原型上，只有 data 是在当前实例对象上
+    // this.create = options.c reate
+    // this.delete = options.delete
+    // this.update = options.update
+    // this.get = options.get
+    _this = _super.call(this);
+    var keys = ["data", "create", "delete", "update", "get"];
+    keys.forEach(function (key) {
+      if (key in options) {
+        _this[key] = options[key];
+      }
+    });
+    return _this;
+  }
+
+  _createClass(Model, [{
+    key: "create",
+    value: function create() {
+      var _console, _console$error;
+
+      // console.error("你还没有实现 create")
+      // if(console && console.error){ console.error("你还没有实现 create")} // 检查是否具有console和console.error方法。ie 就没有 console
+      // console && console.error && console.error("你还没有实现 create")  // 有经验的程序员 会写成这样
+      (_console = console) === null || _console === void 0 ? void 0 : (_console$error = _console.error) === null || _console$error === void 0 ? void 0 : _console$error.call(_console, "你还没有实现 create"); // 2019.10 最新语法，可选链语法「?.」
+    }
+  }, {
+    key: "delete",
+    value: function _delete() {
+      console.error("你还没有实现 delete");
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      console.error("你还没有实现 update");
+    }
+  }, {
+    key: "get",
+    value: function get() {
+      console.error("你还没有实现 get");
+    }
+  }]);
+
+  return Model;
+}(_EventBus2.default);
+
+var _default = Model; // 类的使用
+// const m = new Model()
+// m.create()
+// m.delete()
+// m.update()
+// m.get()
+
+exports.default = _default;
+},{"./EventBus":"BQVr"}],"SFHW":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _jquery = _interopRequireDefault(require("jquery"));
+
+var _EventBus2 = _interopRequireDefault(require("./EventBus"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var View = /*#__PURE__*/function (_EventBus) {
+  _inherits(View, _EventBus);
+
+  var _super = _createSuper(View);
+
+  // constructor({el, html, render, data, eventBus, events}) {
+  function View(options) {
+    var _this;
+
+    _classCallCheck(this, View);
+
+    _this = _super.call(this);
+    Object.assign(_assertThisInitialized(_this), options); // 这句表示，把 options 上的属性都放到 this 上
+
+    _this.el = (0, _jquery.default)(_this.el); // el 获取到节点，再覆盖到 this.el 上
+
+    /*this.html = html
+    this.render = render
+    this.data = data
+    this.eventBus = eventBus
+    this.events = events*/
+    // init ↓ ↓
+
+    _this.render(_this.data); // view = render(data) 第一次渲染
+
+
+    _this.autoBindEvents();
+
+    _this.on("m:updated", function () {
+      _this.render(_this.data);
+    });
+
+    return _this;
+  }
+
+  _createClass(View, [{
+    key: "autoBindEvents",
+    value: function autoBindEvents() {
+      for (var key in this.events) {
+        var func = this[this.events[key]];
+        var spaceIndex = key.indexOf(" ");
+        var part1 = key.slice(0, spaceIndex);
+        var part2 = key.slice(spaceIndex + 1); // console.log(part1, part2, func)
+
+        this.el.on(part1, part2, func);
+      }
+    }
+  }]);
+
+  return View;
+}(_EventBus2.default);
+
+var _default = View;
+exports.default = _default;
+},{"jquery":"juYr","./EventBus":"BQVr"}],"US5u":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
 require("./app1.css");
 
 var _jquery = _interopRequireDefault(require("jquery"));
 
+var _Model = _interopRequireDefault(require("./base/Model.js"));
+
+var _View = _interopRequireDefault(require("./base/View"));
+
+var _EventBus = _interopRequireDefault(require("./base/EventBus"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var $button1 = (0, _jquery.default)("#add1");
-var $button2 = (0, _jquery.default)("#minus1");
-var $button3 = (0, _jquery.default)("#mul2");
-var $button4 = (0, _jquery.default)("#divide2");
-var $number = (0, _jquery.default)("#number");
-var n = localStorage.getItem("n");
-$number.text(n || 100);
-$button1.on("click", function () {
-  var n = parseInt($number.text());
-  n += 1;
-  localStorage.setItem("n", n);
-  $number.text(n);
-});
-$button2.on("click", function () {
-  var n = parseInt($number.text());
-  n -= 1;
-  localStorage.setItem("n", n);
-  $number.text(n);
-});
-$button3.on("click", function () {
-  var n = parseInt($number.text());
-  n *= 2;
-  localStorage.setItem("n", n);
-  $number.text(n);
-});
-$button4.on("click", function () {
-  var n = parseInt($number.text());
-  n /= 2;
-  localStorage.setItem("n", n);
-  $number.text(n);
-});
-},{"./app1.css":"AQoi","jquery":"juYr"}],"vZ5o":[function(require,module,exports) {
+// 传一个空对象，不是为了获取元素，而是为了获取对象上的方法 on 监听事件、trigger 触发事件
+// 如果在一个监听，一个触发，那这两个事件就可以认为是实现了【通信】
+// const eventBus = $(window)
+// console.log(eventBus.on)
+// console.log(eventBus.trigger)
+var eventBus = new _EventBus.default();
+/*
+* 数据相关 都放到 M
+* 视图相关 都放到 V
+* 其他都放到 C
+* */
+
+var m = new _Model.default({
+  data: {
+    n: parseFloat(localStorage.getItem("n")) || 100
+  },
+  update: function update(data) {
+    Object.assign(m.data, data);
+    eventBus.trigger("m:updated");
+    localStorage.setItem("n", m.data.n);
+  }
+}); // console.log("app1")
+// console.dir(m)
+
+/*const v = {
+  el: null,
+  html: `
+    <div>
+      <div class="output">
+        <span id="number">{{n}}</span>
+      </div>
+      <div>
+        <button id="add1">+1</button>
+        <button id="minus1">-1</button>
+        <button id="mul2">×2</button>
+        <button id="divide2">÷2</button>
+      </div>
+    </div>
+  `,
+  init(el) {
+    v.el = $(el)
+  },
+  render(n) {
+    if (v.el.children.length !== 0) v.el.empty()
+    $(v.html.replace("{{n}}", n)).appendTo(v.el)
+  }
+}*/
+
+var init = function init(el) {
+  new _View.default({
+    el: el,
+    data: m.data,
+    eventBus: eventBus,
+    html: "\n    <div>\n      <div class=\"output\">\n        <span id=\"number\">{{n}}</span>\n      </div>\n      <div>\n        <button id=\"add1\">+1</button>\n        <button id=\"minus1\">-1</button>\n        <button id=\"mul2\">\xD72</button>\n        <button id=\"divide2\">\xF72</button>\n      </div>\n    </div>\n  ",
+    render: function render(data) {
+      var n = data.n;
+      if (this.el.children.length !== 0) this.el.empty();
+      (0, _jquery.default)(this.html.replace("{{n}}", n)).appendTo(this.el);
+    },
+    events: {
+      "click #add1": "add",
+      "click #minus1": "minus",
+      "click #mul2": "mul",
+      "click #divide2": "div"
+    },
+    add: function add() {
+      m.update({
+        n: m.data.n + 1
+      });
+    },
+    minus: function minus() {
+      m.update({
+        n: m.data.n - 1
+      });
+    },
+    mul: function mul() {
+      m.update({
+        n: m.data.n * 2
+      });
+    },
+    div: function div() {
+      m.update({
+        n: m.data.n / 2
+      });
+    }
+  });
+};
+
+var _default = init;
+exports.default = _default;
+},{"./app1.css":"AQoi","jquery":"juYr","./base/Model.js":"wYwp","./base/View":"SFHW","./base/EventBus":"BQVr"}],"vZ5o":[function(require,module,exports) {
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
 require("./app2.css");
 
 var _jquery = _interopRequireDefault(require("jquery"));
 
+var _Model = _interopRequireDefault(require("./base/Model"));
+
+var _View = _interopRequireDefault(require("./base/View"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var $tabBar = (0, _jquery.default)("#app2 .tab-bar");
-var $tabContent = (0, _jquery.default)("#app2 .tab-content"); // 1. jq 提供的事件委托写法如下：监听 tabBar 下的所以 li 的 click 事件
+var eventBus = (0, _jquery.default)(window);
+var localKey = "app2.index";
+/*const m = {
+  data: {
+    index: parseInt(localStorage.getItem(localKey)) || 0
+  },
+  create() {},
+  delete() {},
+  update(data) {
+    Object.assign(m.data, data)  // 把参数 data 替换到 m.data
+    eventBus.trigger("m:updated")
+    localStorage.setItem("index", m.data.index)
+  },
+  get() {}
+}*/
+// 使用「类」
+
+var m = new _Model.default({
+  data: {
+    index: parseInt(localStorage.getItem(localKey)) || 0
+  },
+  update: function update(data) {
+    Object.assign(m.data, data);
+    eventBus.trigger("m:updated");
+    localStorage.setItem(localKey, m.data.index);
+  }
+}); // console.log("app2")
+// console.dir(m)
+
+/*const v = {
+  el: null,
+  html: (index) => {
+    return `
+      <div>
+        <ol class="tab-bar">
+          <li class="${index === 0 ? "selected" : ""}" data-index="0"><span>1111</span></li>
+          <li class="${index === 1 ? "selected" : ""}" data-index="1"><span>2222</span></li>
+        </ol>
+        <ol class="tab-content">
+          <li class="${index === 0 ? "active" : ""}">内容1</li>
+          <li class="${index === 1 ? "active" : ""}">内容2</li>
+        </ol>
+      </div>
+    `
+  },
+  init(el) {
+    v.el = $(el)
+  },
+  render(index) {
+    if (v.el.children.length !== 0) v.el.empty()
+    $(v.html(index)).appendTo(v.el)
+  }
+}*/
+// v 和 c 合并
+
+/*const view = new View({
+  el: null,
+  html: (index) => {
+    return `
+      <div>
+        <ol class="tab-bar">
+          <li class="${index === 0 ? "selected" : ""}" data-index="0"><span>1111</span></li>
+          <li class="${index === 1 ? "selected" : ""}" data-index="1"><span>2222</span></li>
+        </ol>
+        <ol class="tab-content">
+          <li class="${index === 0 ? "active" : ""}">内容1</li>
+          <li class="${index === 1 ? "active" : ""}">内容2</li>
+        </ol>
+      </div>
+    `
+  },
+  render(index) {
+    if (view.el.children.length !== 0) view.el.empty()
+    $(view.html(index)).appendTo(view.el)
+  },
+  events: {
+    "click .tab-bar li": "x"
+  },
+  x(e) {
+    const index = parseInt(e.currentTarget.dataset.index)
+    m.update({index: index})
+  }
+})*/
+
+var init = function init(el) {
+  new _View.default({
+    el: el,
+    data: m.data,
+    eventBus: eventBus,
+    html: function html(index) {
+      return "\n        <div>\n          <ol class=\"tab-bar\">\n            <li class=\"".concat(index === 0 ? "selected" : "", "\" data-index=\"0\"><span>1111</span></li>\n            <li class=\"").concat(index === 1 ? "selected" : "", "\" data-index=\"1\"><span>2222</span></li>\n          </ol>\n          <ol class=\"tab-content\">\n            <li class=\"").concat(index === 0 ? "active" : "", "\">\u5185\u5BB91</li>\n            <li class=\"").concat(index === 1 ? "active" : "", "\">\u5185\u5BB92</li>\n          </ol>\n        </div>\n      ");
+    },
+    render: function render(data) {
+      var index = data.index;
+      if (this.el.children.length !== 0) this.el.empty();
+      (0, _jquery.default)(this.html(index)).appendTo(this.el);
+    },
+    events: {
+      "click .tab-bar li": "x"
+    },
+    x: function x(e) {
+      var index = parseInt(e.currentTarget.dataset.index);
+      m.update({
+        index: index
+      });
+    }
+  });
+};
+
+var _default = init;
+/*
+const $tabBar = $("#app2 .tab-bar")
+const $tabContent = $("#app2 .tab-content")
+
+// 1. jq 提供的事件委托写法如下：监听 tabBar 下的所以 li 的 click 事件
 // 2. 如何确定一个元素在所有同级元素中的位置：遍历。jq 内置遍历下标 index()
+$tabBar.on("click", "li", (e) => {
+// console.log(e.target)  // 可能获取到 span
+// console.log(e.currentTarget)  // 只获取 li // 具体用哪一个，可以试一下
+  const $li = $(e.currentTarget)
+  
+  $li.addClass("selected")
+    .siblings().removeClass("selected")
+  
+  const index = $li.index()  // 获取当前激活的tab的下标
+  localStorage.setItem(localKey, index) // 存储到 ls
+// console.log(index)  // 0 或 1
+  
+  $tabContent.children().eq(index).addClass("active") // 匹配展示内容与tabBar标题
+    .siblings().removeClass("active")
+})
 
-$tabBar.on("click", "li", function (e) {
-  // console.log(e.target)  // 可能获取到 span
-  // console.log(e.currentTarget)  // 只获取 li // 具体用哪一个，可以试一下
-  var $li = (0, _jquery.default)(e.currentTarget);
-  $li.addClass("selected").siblings().removeClass("selected");
-  var index = $li.index();
-  console.log(index); // 0 或 1
+// 设置默认情况下，激活第 index 个 li （也可以在 html 中直接添加上激活的类名来展示默认li）
+$tabBar.children().eq(index).trigger("click")
+*/
 
-  $tabContent.children().eq(index).addClass("active").siblings().removeClass("active");
-}); // 设置默认情况下，展示第一个 li（也可以在 html 中直接添加上激活的类名来展示默认li）
-
-$tabBar.children().eq(0).trigger("click");
-},{"./app2.css":"AQoi","jquery":"juYr"}],"y8lT":[function(require,module,exports) {
+exports.default = _default;
+},{"./app2.css":"AQoi","jquery":"juYr","./base/Model":"wYwp","./base/View":"SFHW"}],"y8lT":[function(require,module,exports) {
 "use strict";
 
 require("./app3.css");
@@ -11279,10 +11722,32 @@ var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var html = "\n    <section id=\"app3\">\n      <div class=\"square\"></div>\n    </section>\n";
+var $element = (0, _jquery.default)(html).appendTo((0, _jquery.default)("body>.page"));
 var $square = (0, _jquery.default)("#app3 .square");
+var localKey = "app3.active";
+/* 可能有三个值，yes、no、默认undefined */
+
+var active = localStorage.getItem(localKey) === "yes"; // 现在根据active变量，为true 就添加类名，为false，就不添加类名
+
+/*if (active) {
+  $square.addClass("active")
+} else {
+  $square.removeClass("active")
+}*/
+// 上面代码块可以用 toggleClass 简写
+
+$square.toggleClass("active", active); // 表示 active 变量为 true，则添加“active”类名，false 则不添加
+
 $square.on("click", function () {
-  /* toggle（切换）有则删除、无则添加 */
-  $square.toggleClass("active");
+  // $square.toggleClass("active") // toggle（切换）有则删除、无则添加
+  if ($square.hasClass("active")) {
+    localStorage.setItem("app3.active", "no");
+    $square.removeClass("active");
+  } else {
+    $square.addClass("active");
+    localStorage.setItem("app3.active", "yes");
+  }
 });
 },{"./app3.css":"AQoi","jquery":"juYr"}],"eWpN":[function(require,module,exports) {
 "use strict";
@@ -11293,6 +11758,8 @@ var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var html = "\n    <section id=\"app4\">\n      <div class=\"circle\"></div>\n    </section>\n";
+var $element = (0, _jquery.default)(html).appendTo((0, _jquery.default)("body>.page"));
 var $circle = (0, _jquery.default)("#app4 .circle");
 $circle.on("mouseenter", function () {
   $circle.addClass("active");
@@ -11306,12 +11773,18 @@ require("./reset.css");
 
 require("./global.css");
 
-require("./app1_step2.js");
+var _app = _interopRequireDefault(require("./app1.js"));
 
-require("./app2.js");
+var _app2 = _interopRequireDefault(require("./app2.js"));
 
 require("./app3.js");
 
 require("./app4.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// x 就是 c/view 的地址
+(0, _app.default)("#app1");
+(0, _app2.default)("#app2");
 },{"./reset.css":"AQoi","./global.css":"AQoi","./app1.js":"US5u","./app2.js":"vZ5o","./app3.js":"y8lT","./app4.js":"eWpN"}]},{},["epB2"], null)
-//# sourceMappingURL=main.ada74431.js.map
+//# sourceMappingURL=main.175a0f94.js.map

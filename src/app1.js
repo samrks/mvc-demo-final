@@ -2,12 +2,15 @@ import "./app1.css"
 import $ from "jquery"
 import Model from "./base/Model.js"
 import View from "./base/View"
+import EventBus from "./base/EventBus"
 
 // 传一个空对象，不是为了获取元素，而是为了获取对象上的方法 on 监听事件、trigger 触发事件
 // 如果在一个监听，一个触发，那这两个事件就可以认为是实现了【通信】
-const eventBus = $(window)
+// const eventBus = $(window)
 // console.log(eventBus.on)
 // console.log(eventBus.trigger)
+
+const eventBus = new EventBus()
 
 /*
 * 数据相关 都放到 M
@@ -17,16 +20,16 @@ const eventBus = $(window)
 
 const m = new Model({
   data: {
-    n: JSON.parse(localStorage.getItem("n")) || 100
+    n: parseFloat(localStorage.getItem("n")) || 100
   },
   update(data) {
     Object.assign(m.data, data)
     eventBus.trigger("m:updated")
-    localStorage.setItem("n", JSON.stringify(m.data.n))
+    localStorage.setItem("n", m.data.n)
   }
 })
-console.log("app1")
-console.dir(m)
+// console.log("app1")
+// console.dir(m)
 
 /*const v = {
   el: null,
@@ -52,18 +55,13 @@ console.dir(m)
   }
 }*/
 
-const view = {
-  init(container) {
-    // v.init(container)
-    view.el = $(container)   // 可省略 v.init
-    view.render(m.data.n) // view = render(data) 第一次渲染
-    view.autoBindEvents()
-    eventBus.on("m:updated", () => {
-      view.render(m.data.n)
-    })
-  },
-  el: null,
-  html: `
+
+const init = (el)=> {
+  new View({
+    el: el,
+    data: m.data,
+    eventBus: eventBus,
+    html: `
     <div>
       <div class="output">
         <span id="number">{{n}}</span>
@@ -76,37 +74,30 @@ const view = {
       </div>
     </div>
   `,
-  render(n) {
-    if (view.el.children.length !== 0) view.el.empty()
-    $(view.html.replace("{{n}}", n)).appendTo(view.el)
-  },
-  events: {
-    "click #add1": "add",
-    "click #minus1": "minus",
-    "click #mul2": "mul",
-    "click #divide2": "div"
-  },
-  add() {
-    m.update({n: m.data.n + 1})
-  },
-  minus() {
-    m.update({n: m.data.n - 1})
-  },
-  mul() {
-    m.update({n: m.data.n * 2})
-  },
-  div() {
-    m.update({n: m.data.n / 2})
-  },
-  autoBindEvents() {
-    for (let key in view.events) {
-      const func = view[view.events[key]]
-      const spaceIndex = key.indexOf(" ")
-      const part1 = key.slice(0, spaceIndex)
-      const part2 = key.slice(spaceIndex + 1)
-      view.el.on(part1, part2, func)
+    render(data) {
+      const n = data.n
+      if (this.el.children.length !== 0) this.el.empty()
+      $(this.html.replace("{{n}}", n)).appendTo(this.el)
+    },
+    events: {
+      "click #add1": "add",
+      "click #minus1": "minus",
+      "click #mul2": "mul",
+      "click #divide2": "div"
+    },
+    add() {
+      m.update({n: m.data.n + 1})
+    },
+    minus() {
+      m.update({n: m.data.n - 1})
+    },
+    mul() {
+      m.update({n: m.data.n * 2})
+    },
+    div() {
+      m.update({n: m.data.n / 2})
     }
-  }
+  })
 }
 
-export default view
+export default init

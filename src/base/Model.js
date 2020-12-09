@@ -1,12 +1,16 @@
-// 类的声明
-class Model {
+import EventBus from "./EventBus"
+
+// extends 实现继承共有属性
+class Model extends EventBus {
   constructor(options) {
     // this.data = options.data  // data 必须传入才会赋值到当前实例对象的data上。也就是说，下面的方法都是在原型上，只有 data 是在当前实例对象上
-    // this.create = options.create
+    // this.create = options.c reate
     // this.delete = options.delete
     // this.update = options.update
     // this.get = options.get
-    ["data", "create", "delete", "update", "get"].forEach((key) => {
+    super()
+    const keys = ["data", "create", "delete", "update", "get"]
+    keys.forEach((key) => {
       if (key in options) {
         this[key] = options[key]
       }
